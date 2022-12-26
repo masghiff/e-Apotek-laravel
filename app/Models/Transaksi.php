@@ -11,4 +11,7 @@ class Transaksi extends Model
 
     protected $table = 'transaksis';
     protected $guarded = [];
+    protected $primaryKey = 'nota';
+    public $incrementing = false;
+    protected $keyType = 'string';
 }

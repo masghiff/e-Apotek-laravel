@@ -18,19 +18,19 @@ class KategoriSeeder extends Seeder
         //
         $data = [
             [
-                'id' => 1,
+                'id' => '07718991-d5f9-4a15-8a2c-0cc014642596',
                 'nama' => 'Obat Bebas',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
-                'id' => 2,
+                'id' => 'dd655080-9f5f-429b-9142-9f25ad4cb1f4',
                 'nama' => 'Obat Keras',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
-                'id' => 3,
+                'id' => '3a452da5-b34a-42c4-994f-dc5f50c44925',
                 'nama' => 'Obat Herbal',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),

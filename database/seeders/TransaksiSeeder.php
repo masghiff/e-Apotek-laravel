@@ -19,8 +19,8 @@ class TransaksiSeeder extends Seeder
         $data = [
             [
                 'nota' => '4KF9QBDJXY',
-                'membership_id' => 1,
-                'obat_id' => 1,
+                'user_id' => 'a9fc2932-9525-42c9-bee4-86e3d1563fbc',
+                'obat_id' => 'ea7dee69-3bc5-48ef-9441-c8f3d92cdd23',
                 'jumlah' => '5',
                 'total_harga' => '12500',
                 'status' => 'sukses',

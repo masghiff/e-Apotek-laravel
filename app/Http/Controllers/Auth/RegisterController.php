@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Membership;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Alert;
+use DB;
 
 class RegisterController extends Controller
 {
@@ -69,5 +73,53 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $message = '';
+
+        $username = $request->username;
+        $password = $request->password;
+        $nama = $request->nama;
+
+        if(!$username|| !$password)
+        {
+            Alert::error('Failed!', 'Harus di isi semua');
+        }
+
+        if(strlen($request->password) < 8 )
+        {
+            Alert::error('Failed!', 'Password minimal 8 karakter');
+        }
+
+        $result = DB::transaction(function () use ($request, $message) {
+            $user = new User();
+            $user->username = $request->username;
+            $user->password = $request->password;
+            $user->nama = $request->nama;
+            $user->role = 'pelanggan';
+            $user->save();
+
+            $membership = new Membership();
+            $membership->nama = 'SILVER';
+            $membership->point = '0';
+            $membership->users_username = $request->username;
+            $membership->save();
+
+            $message = "OK";
+
+        });
+
+        if($message == "OK")
+        {
+            return route('pelanggan.home');
+        }
+        else
+        {
+            Alert::error('Failed!', 'Register gagal, mohon coba lagi.');
+        }
+
+
     }
 }

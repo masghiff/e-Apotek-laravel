@@ -15,9 +15,9 @@ class CreateTransaksisTable extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->string('nota')->primary();
-            $table->unsignedBigInteger('membership_id');
-            $table->foreign('membership_id')->references('id')->on('memberships');
-            $table->unsignedBigInteger('obat_id');
+            $table->uuid('user_id')->nullable(false);
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->uuid('obat_id')->nullable(false);
             $table->foreign('obat_id')->references('id')->on('obats');
             $table->string('jumlah');
             $table->string('total_harga');

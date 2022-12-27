@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Auth::routes();
+Route::post('/register', [RegisterController::class, 'register'])->name('register.pelanggan');
 
 Route::get('/', function () {
     return view('welcome');

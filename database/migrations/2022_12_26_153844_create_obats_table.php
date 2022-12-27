@@ -14,13 +14,13 @@ class CreateObatsTable extends Migration
     public function up()
     {
         Schema::create('obats', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('nama');
             $table->string('stok');
             $table->string('harga');
-            $table->unsignedBigInteger('kategori_id');
+            $table->uuid('kategori_id')->nullable(false);
             $table->foreign('kategori_id')->references('id')->on('kategoris');
-            $table->unsignedBigInteger('supplier_id');
+            $table->uuid('supplier_id')->nullable(false);
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->boolean('delete_at')->default(0)->change();
             $table->timestamps();

@@ -264,6 +264,8 @@
 
     </style>
 
+    @include('sweetalert::alert')
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -275,15 +277,16 @@
 
         <!-- Icon -->
         <div class="fadeIn first">
-          <img src="{{asset('assets/e-apotek.png')}}" id="icon" alt="User Icon" />
+            <img src="{{asset('assets/e-apotek.png')}}" id="icon" alt="User Icon" />
         </div>
 
         <!-- Login Form -->
-        <form>
-          <input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
-          <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
-          <input type="text" id="nama" class="fadeIn third" name="nama" placeholder="nama">
-          <input type="submit" class="fadeIn fourth" value="Register">
+        <form method="POST" action="{{route('register.pelanggan')}}">
+            @csrf
+            <input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
+            <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+            <input type="text" id="nama" class="fadeIn third" name="nama" placeholder="nama">
+            <input type="submit" class="fadeIn fourth" value="Register">
         </form>
       </div>
     </div>

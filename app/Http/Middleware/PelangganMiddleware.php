@@ -16,6 +16,13 @@ class PelangganMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if(Auth::check() && Auth::user()->role == "pelanggan")
+        {
+            return $next($request);
+        }
+        else
+        {
+            return back();
+        }
     }
 }

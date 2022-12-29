@@ -116,7 +116,7 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active  
   transform: scale(0.95);
 }
 
-input[type=text] {
+input[type=text], input[type='password'] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;
@@ -281,9 +281,11 @@ input[type=text]:placeholder {
     </div>
 
     <!-- Login Form -->
-    <form>
+    <form method="POST" action="{{route('login')}}">
+        @csrf
       <input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
-      <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+      <label for="">Sudah mempunyai akun ? </label><a href="{{route('register.dashboard')}}">Register</a>
       <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
   </div>

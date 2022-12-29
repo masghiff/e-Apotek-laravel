@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -28,13 +31,14 @@ class LoginController extends Controller
      */
     protected $redirectTo;
 
-    protected function redirectTo(){
+    protected function redirectTo()
+    {
 
-        if(Auth()->user()->role == "admin")
+        if(auth()->user()->role == "admin")
         {
             return route('admin.dashboard');
         }
-        elseif(Auth()->user()->role == "pelanggan")
+        else
         {
             return route('pelanggan.dashboard');
         }
@@ -48,7 +52,12 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        return redirect()->route('login');
+        // return redirect()->route('login');
+    }
+
+    public function index()
+    {
+        return view('auth.login');
     }
 
     public function login(Request $request)
@@ -56,28 +65,26 @@ class LoginController extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
 
-
         if(auth()->attempt(array('username'=>$username, 'password'=>$password)))
         {
-
             if(auth()->user()->role == "admin")
             {
                 return redirect()->route('admin.dashboard');
             }
-            elseif(auth()->user()->role == "pelanggan")
+            else
             {
                 return redirect()->route('pelanggan.dashboard');
             }
         }
         else
         {
-            return redirect()->route('login')->with('failed', 'Username and password are wrong');
+            return redirect('/')->with('failed', 'Username and password are wrong');
         }
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('login');
+        return redirect('/');
     }
 }

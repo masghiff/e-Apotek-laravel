@@ -13,8 +13,9 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.index');
     }
+
 
     /**
      * Show the form for creating a new resource.

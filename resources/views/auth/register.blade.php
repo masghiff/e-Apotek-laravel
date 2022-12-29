@@ -265,7 +265,7 @@
     </style>
 
     @include('sweetalert::alert')
-
+    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -288,5 +288,6 @@
             <input type="text" id="nama" class="fadeIn third" name="nama" placeholder="nama">
             <input type="submit" class="fadeIn fourth" value="Register">
         </form>
+        <label for=""><a href="{{route('login.dashboard')}}">Login</a></label>
       </div>
     </div>

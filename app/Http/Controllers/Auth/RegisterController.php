@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Alert;
-use DB;
+use App\Helper\Uuid;
 
 class RegisterController extends Controller
 {
@@ -75,51 +75,45 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        return view('auth.register');
+    }
+
     public function register(Request $request)
     {
         $message = '';
+
+        $uuid = Uuid::getId();
 
         $username = $request->username;
         $password = $request->password;
         $nama = $request->nama;
 
-        if(!$username|| !$password)
+        if(empty($username) || empty($nama))
         {
             Alert::error('Failed!', 'Harus di isi semua');
+            return redirect()->route('register.dashboard');
         }
 
         if(strlen($request->password) < 8 )
         {
             Alert::error('Failed!', 'Password minimal 8 karakter');
+            return back();
         }
 
-        $result = DB::transaction(function () use ($request, $message) {
-            $user = new User();
-            $user->username = $request->username;
-            $user->password = $request->password;
-            $user->nama = $request->nama;
-            $user->role = 'pelanggan';
-            $user->save();
+        $user = new User();
+        $user->id = $uuid;
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->nama = $request->nama;
+        $user->role = 'pelanggan';
+        $user->membership = 'SILVER';
+        $user->point = '0';
+        $user->save();
 
-            $membership = new Membership();
-            $membership->nama = 'SILVER';
-            $membership->point = '0';
-            $membership->users_username = $request->username;
-            $membership->save();
 
-            $message = "OK";
-
-        });
-
-        if($message == "OK")
-        {
-            return route('pelanggan.home');
-        }
-        else
-        {
-            Alert::error('Failed!', 'Register gagal, mohon coba lagi.');
-        }
-
+        return route('pelanggan.home');
 
     }
 }

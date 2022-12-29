@@ -116,7 +116,7 @@
       transform: scale(0.95);
     }
 
-    input[type=text] {
+    input[type=text], input[type=password], input[type=file] {
       background-color: #f6f6f6;
       border: none;
       color: #0d0d0d;
@@ -281,11 +281,12 @@
         </div>
 
         <!-- Login Form -->
-        <form method="POST" action="{{route('register.pelanggan')}}">
+        <form method="POST" action="{{route('register.pelanggan')}}" enctype="multipart/form-data">
             @csrf
             <input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
-            <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
             <input type="text" id="nama" class="fadeIn third" name="nama" placeholder="nama">
+            <input type="file" id="image" class="fadeIn third" name="image" placeholder="image">
             <input type="submit" class="fadeIn fourth" value="Register">
         </form>
         <label for=""><a href="{{route('login.dashboard')}}">Login</a></label>

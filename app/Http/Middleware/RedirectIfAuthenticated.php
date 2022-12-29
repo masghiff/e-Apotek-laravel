@@ -21,7 +21,6 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
-        dd("ini ", Auth::user()->role);
         foreach ($guards as $guard) {
 
             if(Auth::guard($guard)->check() && Auth::user()->role == "admin")

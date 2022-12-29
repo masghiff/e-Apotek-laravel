@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Alert;
 use App\Helper\Uuid;
+use App\Helper\Storage;
 
 class RegisterController extends Controller
 {
@@ -102,18 +103,31 @@ class RegisterController extends Controller
             return back();
         }
 
+        $data = User::select('username')->where('username', $request->username)->first();
+
+        if(!empty($data['username']))
+        {
+            Alert::error('Failed', 'Username sudah ada.');
+            return back();
+        }
+
         $user = new User();
         $user->id = $uuid;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->nama = $request->nama;
+        if($request->hasFile('image'))
+        {
+            $uploadImage = Storage::uploadImageUser($request->file('image'));
+            $user->foto = $uploadImage;
+        }
         $user->role = 'pelanggan';
         $user->membership = 'SILVER';
         $user->point = '0';
         $user->save();
 
 
-        return route('pelanggan.home');
+        return back();
 
     }
 }

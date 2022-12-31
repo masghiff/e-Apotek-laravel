@@ -11,4 +11,7 @@ class Kategori extends Model
 
     protected $table = 'kategoris';
     protected $guarded = [];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 }

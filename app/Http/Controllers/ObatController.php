@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Obat;
+use App\Models\Kategori;
+use App\Models\Supplier;
+use App\Helper\Uuid;
+use App\Helper\Storage;
+use Alert;
 
 class ObatController extends Controller
 {
@@ -14,6 +20,28 @@ class ObatController extends Controller
     public function index()
     {
         //
+        $data = Obat::select('obats.id', 'obats.nama', 'obats.stok',
+            'obats.harga', 'obats.foto', 'kategoris.nama as kategori',
+            'suppliers.nama as supplier')
+            ->join('suppliers', 'suppliers.id', '=', 'obats.supplier_id')
+            ->join('kategoris', 'kategoris.id', '=', 'obats.kategori_id')
+            ->get();
+
+            // dd($data);
+        return view('admin.obat.index', compact('data'));
+    }
+
+    public function indexPelanggan()
+    {
+        // $data = Obat::select('obats.id', 'obats.nama', 'obats.stok',
+        //     'obats.harga', 'obats.foto', 'kategoris.nama as kategori',
+        //     'suppliers.nama as supplier')
+        //     ->join('suppliers', 'suppliers.id', '=', 'obats.supplier_id')
+        //     ->join('kategoris', 'kategoris.id', '=', 'obats.kategori_id')
+        //     ->get();
+
+        //     // dd($data);
+        return view('pelanggan.obat.index');
     }
 
     /**
@@ -24,6 +52,10 @@ class ObatController extends Controller
     public function create()
     {
         //
+        $kategori = Kategori::select('id', 'nama')->get();
+        $supplier = Supplier::select('id', 'nama')->get();
+
+        return view('admin.obat.create', compact('kategori', 'supplier'));
     }
 
     /**
@@ -35,6 +67,25 @@ class ObatController extends Controller
     public function store(Request $request)
     {
         //
+        $uuid = Uuid::getId();
+
+        $obat = new Obat();
+        $obat->id = $uuid;
+        $obat->nama = $request->nama;
+        $obat->stok = $request->stok;
+        $obat->harga = $request->harga;
+        $obat->kategori_id = $request->kategori;
+        $obat->supplier_id = $request->supplier;
+        if($request->hasFile('image'))
+        {
+            $uploadImage = Storage::uploadImageObat($request->file('image'));
+            $obat->foto = $uploadImage;
+        }
+        $obat->save();
+
+        Alert::success('Sukses!', 'Tambah Obat Sukses');
+        return back();
+
     }
 
     /**
@@ -46,6 +97,7 @@ class ObatController extends Controller
     public function show($id)
     {
         //
+
     }
 
     /**
@@ -57,6 +109,17 @@ class ObatController extends Controller
     public function edit($id)
     {
         //
+        $data = Obat::select('obats.id', 'obats.nama',
+            'obats.stok', 'obats.harga', 'obats.foto',
+            'kategoris.nama as kategori', 'suppliers.nama as supplier')
+            ->join('kategoris', 'kategoris.id', 'obats.kategori_id')
+            ->join('suppliers', 'suppliers.id', 'obats.supplier_id')
+            ->where('obats.id', $id)
+            ->first();
+        $kategori = Kategori::select('id', 'nama')->get();
+        $supplier = Supplier::select('id', 'nama')->get();
+
+        return view('admin.obat.edit', compact('data', 'kategori', 'supplier'));
     }
 
     /**
@@ -69,6 +132,22 @@ class ObatController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        $obat = Obat::where('id', $id)->first();
+        $obat->nama = $request->nama;
+        $obat->stok = $request->stok;
+        $obat->harga = $request->harga;
+        $obat->kategori_id = $request->kategori;
+        $obat->supplier_id = $request->supplier;
+        if($request->hasFile('image'))
+        {
+            $uploadImage = Storage::uploadImageObat($request->file('image'));
+            $obat->foto = $uploadImage;
+        }
+        $obat->save();
+
+        Alert::success('Sukses!', 'Update Obat Sukses');
+        return back();
     }
 
     /**
@@ -80,5 +159,8 @@ class ObatController extends Controller
     public function destroy($id)
     {
         //
+        $data = Obat::where('id', $id)->delete();
+        Alert::success('Sukses!', 'Data berhasil di hapus!');
+        return back();
     }
 }

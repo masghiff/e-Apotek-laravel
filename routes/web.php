@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\ObatController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -27,11 +28,19 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register.da
 Route::post('/register', [RegisterController::class, 'register'])->name('register.pelanggan');
 
 Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth']], function(){
-    Route::get('/home', [HomeController::class, 'index'])->name('admin.dashboard');
+    Route::get('/profile', [HomeController::class, 'index'])->name('admin.profile');
+
+    Route::get('/home', [ObatController::class, 'index'])->name('admin.dashboard');
+    Route::get('/obat/create', [ObatController::class, 'create'])->name('admin.obat.create');
+    Route::post('/obat/create', [ObatController::class, 'store'])->name('admin.obat.create');
+    Route::get('/obat/edit/{id}', [ObatController::class, 'edit'])->name('admin.obat.edit');
+    Route::post('/obat/edit/{id}', [ObatController::class, 'update'])->name('admin.obat.edit');
+    Route::get('/obat/delete/{id}', [ObatController::class, 'destroy'])->name('admin.obat.delete');
+
 });
 
 Route::group(['prefix'=>'pelanggan', 'middleware'=>['isPelanggan','auth']], function(){
-    Route::get('/index', [KategoriController::class, 'index'])->name('pelanggan.dashboard');
+    Route::get('/home', [ObatController::class, 'indexPelanggan'])->name('pelanggan.dashboard');
 });
 
 

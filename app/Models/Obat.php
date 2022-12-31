@@ -11,4 +11,7 @@ class Obat extends Model
 
     protected $table = 'obats';
     protected $guarded = [];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 }

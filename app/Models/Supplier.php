@@ -11,4 +11,7 @@ class Supplier extends Model
 
     protected $table = 'suppliers';
     protected $guarded = [];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 }

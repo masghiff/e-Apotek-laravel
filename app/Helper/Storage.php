@@ -19,7 +19,7 @@ class Storage
     {
       $ext = $fileImage->getClientOriginalExtension();
       $name = UUid::createNameForImage($ext);
-      $fileImage->move(base_path("public/assets/img/kontrak"), $name);
+      $fileImage->move(base_path("public/assets/img/obat"), $name);
 
       return $name;
     }

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use App\Models\Obat;
 use Yajra\DataTables\DataTables;
 use App\Helper\Uuid;
 use Alert;
+use DB;
 
 class KategoriController extends Controller
 {
@@ -86,6 +88,8 @@ class KategoriController extends Controller
     public function edit($id)
     {
         //
+        $data = Kategori::where('id', $id)->first();
+        return view('admin.kategori.edit', compact('data'));
     }
 
     /**
@@ -98,6 +102,10 @@ class KategoriController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $kategori = Kategori::where('id', $id)->first();
+        $kategori->nama = $request->nama;
+        $kategori->save();
+        Alert::success('Sukses!', 'Data kategori berhasil di ubah!');
     }
 
     /**
@@ -109,5 +117,16 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         //
+        $delete = DB::transaction(function() use($id){
+            $kategori = Kategori::where('id', $id)->delete();
+            $obat = Obat::where('kategori_id', $id)->get();
+            $obat->delete();
+            return "sukses";
+        });
+
+        if($delete == "sukses")
+        {
+            Alert::success('Sukses', 'Delete Kategori Sukses!');
+        }
     }
 }

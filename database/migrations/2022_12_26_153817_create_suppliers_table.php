@@ -16,6 +16,7 @@ class CreateSuppliersTable extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama');
+            $table->string('status');
             $table->boolean('delete_at')->default(0)->change();
             $table->timestamps();
         });

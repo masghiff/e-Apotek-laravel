@@ -19,6 +19,7 @@ class CreateObatsTable extends Migration
             $table->string('stok');
             $table->string('harga');
             $table->string('foto');
+            $table->string('status');
             $table->uuid('kategori_id')->nullable(false);
             $table->foreign('kategori_id')->references('id')->on('kategoris');
             $table->uuid('supplier_id')->nullable(false);

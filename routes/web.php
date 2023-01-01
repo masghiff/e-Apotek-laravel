@@ -41,6 +41,18 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth']], function(){
     Route::get('/kategori/get-data', [KategoriController::class, 'getData'])->name('admin.kategori.getdata');
     Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
     Route::post('/kategori/create', [KategoriController::class, 'store'])->name('admin.kategori.create');
+    Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
+    Route::post('/kategori/edit/{id}', [KategoriController::class, 'update'])->name('admin.kategori.edit');
+    Route::get('/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('admin.kategori.delete');
+
+    Route::get('/supplier', [SupplierController::class, 'index'])->name('admin.supplier');
+    Route::get('/supplier/get-data', [SupplierController::class, 'getData'])->name('admin.supplier.getdata');
+    Route::get('/supplier/create', [SupplierController::class, 'create'])->name('admin.supplier.create');
+    Route::post('/supplier/create', [SupplierController::class, 'store'])->name('admin.supplier.create');
+    Route::get('/supplier/edit/{id}', [SupplierController::class, 'edit'])->name('admin.supplier.edit');
+    Route::post('/supplier/edit/{id}', [SupplierController::class, 'update'])->name('admin.supplier.edit');
+    Route::get('/supplier/delete/{id}', [SupplierController::class, 'destroy'])->name('admin.supplier.delete');
+
 
 });
 

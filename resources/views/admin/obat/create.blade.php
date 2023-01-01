@@ -81,7 +81,7 @@
                       </div>
 
                       <div class="col-12">
-                        <button class="btn btn-primary w-100" type="submit">Edit Obat</button>
+                        <button class="btn btn-primary w-100" type="submit">Tambah Obat</button>
                       </div>
                     </form>
 

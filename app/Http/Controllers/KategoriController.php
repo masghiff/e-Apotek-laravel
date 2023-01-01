@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use Yajra\DataTables\DataTables;
+use App\Helper\Uuid;
+use Alert;
 
 class KategoriController extends Controller
 {
@@ -54,6 +56,14 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         //
+        $uuid = Uuid::getId();
+        $kategori = new Kategori();
+        $kategori->id = $uuid;
+        $kategori->nama = $request->nama;
+        $kategori->save();
+
+        Alert::success('Sukses!', 'Sukses menambahkan kategori');
+        return back();
     }
 
     /**

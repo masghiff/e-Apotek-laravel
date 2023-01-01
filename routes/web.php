@@ -37,6 +37,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth']], function(){
     Route::post('/obat/edit/{id}', [ObatController::class, 'update'])->name('admin.obat.edit');
     Route::get('/obat/delete/{id}', [ObatController::class, 'destroy'])->name('admin.obat.delete');
 
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori');
+    Route::get('/kategori/get-data', [KategoriController::class, 'getData'])->name('admin.kategori.getdata');
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
+    Route::post('/kategori/create', [KategoriController::class, 'store'])->name('admin.kategori.create');
+
 });
 
 Route::group(['prefix'=>'pelanggan', 'middleware'=>['isPelanggan','auth']], function(){

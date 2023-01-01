@@ -24,13 +24,13 @@ class KategoriController extends Controller
 
     public function getData()
     {
-        $data = Kategori::orderBy('created_at', 'desc');
+        $data = Kategori::where('status', 'aktif')->orderBy('created_at', 'desc');
         return DataTables::of($data)->addIndexColumn()
                         ->addColumn('aksi', function($row){
                             return
-                            '<a href="#">
+                            '<a href="'.route('admin.kategori.edit', $row->id).'">
                             <i class="bi bi-pen-fill"></i> </a>
-                            <a class="btn-link-danger modal-deletetab1" href="#" data-id="#">
+                            <a class="btn-link-danger modal-deletetab1" href="'.route('admin.kategori.delete', $row->id).'" data-id="#">
                             <i class="bi bi-trash-fill" style="color:red"></i> </a>';
                         })
                         ->rawColumns(['aksi'])
@@ -106,6 +106,7 @@ class KategoriController extends Controller
         $kategori->nama = $request->nama;
         $kategori->save();
         Alert::success('Sukses!', 'Data kategori berhasil di ubah!');
+        return back();
     }
 
     /**
@@ -117,16 +118,11 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         //
-        $delete = DB::transaction(function() use($id){
-            $kategori = Kategori::where('id', $id)->delete();
-            $obat = Obat::where('kategori_id', $id)->get();
-            $obat->delete();
-            return "sukses";
-        });
+        $kategori = Kategori::where('id', $id)->first();
+        $kategori->status = 'nonaktif';
+        $kategori->save();
 
-        if($delete == "sukses")
-        {
-            Alert::success('Sukses', 'Delete Kategori Sukses!');
-        }
+        Alert::success('Sukses', 'Delete Kategori Sukses!');
+        return back();
     }
 }

@@ -204,11 +204,13 @@
         </a>
       </li><!-- End Tables Nav -->
 
+      @if(\Auth::user()->role = 'admin')
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="{{route('admin.supplier')}}">
           <i class="bi bi-bar-chart"></i><span>Supplier</span>
         </a>
       </li><!-- End Charts Nav -->
+      @endif
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">

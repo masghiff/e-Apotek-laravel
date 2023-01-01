@@ -62,6 +62,7 @@ class KategoriController extends Controller
         $kategori = new Kategori();
         $kategori->id = $uuid;
         $kategori->nama = $request->nama;
+        $kategori->status = 'aktif';
         $kategori->save();
 
         Alert::success('Sukses!', 'Sukses menambahkan kategori');

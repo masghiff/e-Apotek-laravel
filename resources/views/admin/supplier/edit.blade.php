@@ -3,11 +3,11 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>Edit Kategori</h1>
+    <h1>Edit Supplier</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Home</a></li>
-        <li class="breadcrumb-item active">Edit Kategori</li>
+        <li class="breadcrumb-item active">Edit Supplier</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -28,17 +28,17 @@
                     <div class="pt-4 pb-2">
                     </div>
 
-                    <form method="POST" action="{{route('admin.kategori.edit', $data['id'])}}" class="row g-3 needs-validation" novalidate>
+                    <form method="POST" action="{{route('admin.supplier.edit', $data['id'])}}" class="row g-3 needs-validation" novalidate>
                       @csrf
                       <div class="col-12">
-                        <label for="yourUsername" class="form-label">Nama Kategori</label>
+                        <label for="yourUsername" class="form-label">Nama Supplier</label>
                         <div class="input-group has-validation">
                           <input type="text" name="nama" class="form-control" id="yourUsername" value="{{$data['nama']}}" required>
-                          <div class="invalid-feedback">Please choose a nama kategori.</div>
+                          <div class="invalid-feedback">Please choose a nama Supplier.</div>
                         </div>
                       </div>
                       <div class="col-12">
-                        <button class="btn btn-primary w-100" type="submit">Edit Kategori</button>
+                        <button class="btn btn-primary w-100" type="submit">Edit Supplier</button>
                       </div>
                     </form>
 

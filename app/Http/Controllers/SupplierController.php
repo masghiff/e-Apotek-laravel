@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Supplier;
+use Yajra\DataTables\DataTables;
+use App\Helper\Uuid;
+use Alert;
 
 class SupplierController extends Controller
 {
@@ -14,6 +18,22 @@ class SupplierController extends Controller
     public function index()
     {
         //
+        return view('admin.supplier.index');
+    }
+
+    public function getData()
+    {
+        $data = Supplier::where('status', 'aktif')->orderBy('created_at', 'desc');
+        return DataTables::of($data)->addIndexColumn()
+                        ->addColumn('aksi', function($row){
+                            return
+                            '<a href="'.route('admin.supplier.edit', $row->id).'">
+                            <i class="bi bi-pen-fill"></i> </a>
+                            <a class="btn-link-danger modal-deletetab1" href="'.route('admin.supplier.delete', $row->id).'" data-id="#">
+                            <i class="bi bi-trash-fill" style="color:red"></i> </a>';
+                        })
+                        ->rawColumns(['aksi'])
+                        ->make(true);
     }
 
     /**
@@ -24,6 +44,7 @@ class SupplierController extends Controller
     public function create()
     {
         //
+        return view('admin.supplier.create');
     }
 
     /**
@@ -35,6 +56,15 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         //
+        $uuid = Uuid::getId();
+        $supplier = new Supplier();
+        $supplier->id = $uuid;
+        $supplier->nama = $request->nama;
+        $supplier->status = 'aktif';
+        $supplier->save();
+
+        Alert::success('Sukses!', 'Sukses menambahkan supplier');
+        return back();
     }
 
     /**
@@ -57,6 +87,8 @@ class SupplierController extends Controller
     public function edit($id)
     {
         //
+        $data = Supplier::where('id', $id)->first();
+        return view('admin.supplier.edit', compact('data'));
     }
 
     /**
@@ -69,6 +101,11 @@ class SupplierController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $supplier = Supplier::where('id', $id)->first();
+        $supplier->nama = $request->nama;
+        $supplier->save();
+        Alert::success('Sukses!', 'Data supplier berhasil di ubah!');
+        return back();
     }
 
     /**
@@ -80,5 +117,11 @@ class SupplierController extends Controller
     public function destroy($id)
     {
         //
+        $supplier = Supplier::where('id', $id)->first();
+        $supplier->status = 'nonaktif';
+        $supplier->save();
+
+        Alert::success('Sukses', 'Delete supplier Sukses!');
+        return back();
     }
 }

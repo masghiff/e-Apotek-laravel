@@ -2,6 +2,12 @@
 
 @section('content')
 
+<style>
+th, td {
+  border: 1px solid #DCDCDC;
+}
+</style>
+
 <div class="pagetitle">
     <h1>Supplier</h1>
     <nav>

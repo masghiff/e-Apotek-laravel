@@ -155,12 +155,21 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
+      @if(\Auth::user()->role == "admin")
       <li class="nav-item">
         <a class="nav-link " href="{{route('admin.dashboard')}}">
           <i class="bi bi-grid"></i>
           <span>Obat</span>
         </a>
       </li><!-- End Dashboard Nav -->
+      @else
+      <li class="nav-item">
+        <a class="nav-link " href="{{route('pelanggan.dashboard')}}">
+          <i class="bi bi-grid"></i>
+          <span>Obat</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      @endif
 
       <li class="nav-item">
         @if(\Auth::user()->role == "admin")
@@ -178,8 +187,8 @@
       </li><!-- End Forms Nav -->
       @else
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-journal-text"></i><span>Transaksi Beli</span>
+        <a class="nav-link collapsed" href="{{route('pelanggan.keranjang.index')}}">
+          <i class="bi bi-journal-text"></i><span>Keranjang</span>
         </a>
       </li><!-- End Forms Nav -->
       @endif

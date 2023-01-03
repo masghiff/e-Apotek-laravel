@@ -65,6 +65,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth']], function(){
 Route::group(['prefix'=>'pelanggan', 'middleware'=>['isPelanggan','auth']], function(){
     Route::get('/home', [PelangganObatController::class, 'index'])->name('pelanggan.dashboard');
     Route::post('/keranjang/{id}', [PelangganObatController::class, 'keranjang'])->name('pelanggan.keranjang');
+    Route::get('/keranjang', [PelangganObatController::class, 'show'])->name('pelanggan.keranjang.index');
+    Route::get('/keranjang/get-data', [PelangganObatController::class, 'getData'])->name('pelanggan.keranjang.getdata');
+    Route::put('/keranjang/acc', [PelangganObatController::class, 'accKeranjang'])->name('pelanggan.keranjang.acc');
 });
 
 

@@ -9,8 +9,10 @@ use App\Models\Transaksi;
 use App\Models\Supplier;
 use App\Helper\Uuid;
 use App\Helper\Storage;
+use Yajra\DataTables\DataTables;
 use Alert;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class PelangganObatController extends Controller
 {
@@ -50,6 +52,42 @@ class PelangganObatController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function accKeranjang()
+    {
+
+        try{
+            $data = Transaksi::select('transaksis.id', 'transaksis.nota', 'transaksis.jumlah', 'transaksis.status', DB::raw("SUM(transaksis.jumlah * obats.harga) as total_harga"))
+            ->join('users', 'users.id', '=', 'transaksis.user_id')
+            ->join('obats', 'obats.id', '=', 'transaksis.obat_id')
+            ->where('transaksis.status', 'menunggu')
+            ->where('users.id', Auth::user()->id)
+            ->groupBy('transaksis.id', 'transaksis.nota', 'transaksis.jumlah', 'transaksis.status')
+            ->get();
+            $random = substr(mt_rand(), 0, 7);
+
+            if(isset($random))
+            {
+                for($i=0; $i < count($data); $i++)
+                {
+                    $transaksi[$i] = Transaksi::where('user_id', Auth::user()->id)->where('status', 'menunggu')->where('id', $data[$i]['id'])->first();
+                    $transaksi[$i]->nota = $random;
+                    $transaksi[$i]->total_harga = $data[$i]['total_harga'];
+                    $transaksi[$i]->status = 'sukses';
+                    $transaksi[$i]->save();
+                }
+            }
+
+            Alert::success('Sukses!', 'Berhasil membeli obats');
+            return back();
+        }catch (\Exception $e){
+
+        }
+
+
+
+    }
+
     public function keranjang(Request $request, $id)
     {
         //
@@ -81,9 +119,32 @@ class PelangganObatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         //
+        return view('pelanggan.keranjang.index');
+    }
+
+    public function getData()
+    {
+        $data = Transaksi::select('transaksis.id', 'obats.nama', 'transaksis.jumlah', 'obats.harga', DB::raw("SUM(transaksis.jumlah * obats.harga) as total_harga"))
+                ->join('users', 'users.id', '=', 'transaksis.user_id')
+                ->join('obats', 'obats.id', '=', 'transaksis.obat_id')
+                ->where('users.id', Auth::user()->id)
+                ->where('transaksis.status', 'menunggu')
+                ->orderBy('transaksis.created_at', 'DESC')
+                ->groupBy('transaksis.id', 'obats.nama', 'transaksis.jumlah', 'obats.harga');
+        return DataTables::of($data)->addIndexColumn()
+                        ->addColumn('aksi', function($row){
+
+                                return
+                                '<a class="btn-link-danger modal-deletetab1" href="#" data-id="#">
+                                <i class="bi bi-trash-fill" style="color:red"></i> </a>';
+
+
+                        })
+                        ->rawColumns(['aksi'])
+                        ->make(true);
     }
 
     /**

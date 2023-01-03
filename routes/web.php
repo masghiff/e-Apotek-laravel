@@ -64,6 +64,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth']], function(){
 
 Route::group(['prefix'=>'pelanggan', 'middleware'=>['isPelanggan','auth']], function(){
     Route::get('/home', [PelangganObatController::class, 'index'])->name('pelanggan.dashboard');
+    Route::post('/keranjang/{id}', [PelangganObatController::class, 'keranjang'])->name('pelanggan.keranjang');
 });
 
 

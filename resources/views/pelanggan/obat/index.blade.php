@@ -40,10 +40,13 @@
                   </div>
                 </div>
               </div>
+              <form method="POST" action="{{route('pelanggan.keranjang', $item['id'])}}">
+                @csrf
               <div class="col-md-12">
                 <input type="number" name="jumlah" class="form-control mb-1 mt-1" placeholder="Jumlah">
-                <button onclick="window.location.href='{{route('admin.obat.delete', $item['id'])}}'" class="btn btn-primary col-md-12">Tambah Keranjang</button>
+                <button class="btn btn-primary col-md-12">Tambah Keranjang</button>
               </div>
+              </form>
 
             </div>
           </div><!-- End Sales Card -->

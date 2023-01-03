@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Obat;
 use App\Models\Kategori;
+use App\Models\Transaksi;
 use App\Models\Supplier;
 use App\Helper\Uuid;
 use App\Helper\Storage;
 use Alert;
+use Illuminate\Support\Facades\Auth;
 
 class PelangganObatController extends Controller
 {
@@ -48,9 +50,29 @@ class PelangganObatController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function keranjang(Request $request, $id)
     {
         //
+
+        if(empty($request->jumlah))
+        {
+            Alert::error('error', 'isi jumlah barang dulu.');
+            return \back();
+        }
+
+        $uuid = Uuid::getId();
+        $keranjang = new Transaksi();
+        $keranjang->id = $uuid;
+        $keranjang->nota = '-';
+        $keranjang->user_id = Auth::user()->id;
+        $keranjang->obat_id = $id;
+        $keranjang->jumlah = $request->jumlah;
+        $keranjang->total_harga = '-';
+        $keranjang->status = 'menunggu';
+        $keranjang->save();
+        Alert::success('Sukses!', 'Berhasil di tambahkan ke keranjang!');
+        return back();
+
     }
 
     /**

@@ -2,7 +2,7 @@
 
 @section('content')
 
-{{-- <div class="pagetitle">
+<div class="pagetitle">
     <h1>Obat</h1>
     <nav>
       <ol class="breadcrumb">
@@ -20,35 +20,41 @@
       <div class="col-lg-12">
         <div class="row">
 
+
           <!-- Sales Card -->
+
           @foreach ($data as $item)
           <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
+            <div class="card info-card sales-card"  style="padding: 5%">
 
               <div class="card-body">
                 <h5 class="card-title">{{$item['nama']}} <span>| {{$item['kategori']}}</span></h5>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <img src="{{asset($item['foto'])}}" alt="obat" style="border-radius: 50%; height: 100%;">
+                    <img src="{{asset('assets/img/obat/'.$item['foto'])}}" alt="obat" style="border-radius: 50%; height: 100%;">
                   </div>
                   <div class="ps-3">
                     <h6>Rp.{{$item['harga']}}</h6>
                     <span class="text-muted small pt-2 ps-1">stok: </span><span class="text-success small pt-1 fw-bold">{{$item['stok']}}</span>
-
                   </div>
                 </div>
+              </div>
+              <div class="col-md-12">
+                <input type="number" name="jumlah" class="form-control mb-1 mt-1" placeholder="Jumlah">
+                <button onclick="window.location.href='{{route('admin.obat.delete', $item['id'])}}'" class="btn btn-primary col-md-12">Tambah Keranjang</button>
               </div>
 
             </div>
           </div><!-- End Sales Card -->
           @endforeach
 
+
         </div>
       </div><!-- End Left side columns -->
 
 
     </div>
-  </section> --}}
+  </section>
 
 @endsection

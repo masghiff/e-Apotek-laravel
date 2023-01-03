@@ -25,23 +25,11 @@ class ObatController extends Controller
             'suppliers.nama as supplier')
             ->join('suppliers', 'suppliers.id', '=', 'obats.supplier_id')
             ->join('kategoris', 'kategoris.id', '=', 'obats.kategori_id')
+            ->where('obats.status', 'aktif')
             ->get();
 
             // dd($data);
         return view('admin.obat.index', compact('data'));
-    }
-
-    public function indexPelanggan()
-    {
-        // $data = Obat::select('obats.id', 'obats.nama', 'obats.stok',
-        //     'obats.harga', 'obats.foto', 'kategoris.nama as kategori',
-        //     'suppliers.nama as supplier')
-        //     ->join('suppliers', 'suppliers.id', '=', 'obats.supplier_id')
-        //     ->join('kategoris', 'kategoris.id', '=', 'obats.kategori_id')
-        //     ->get();
-
-        //     // dd($data);
-        return view('pelanggan.obat.index');
     }
 
     /**
@@ -74,6 +62,7 @@ class ObatController extends Controller
         $obat->nama = $request->nama;
         $obat->stok = $request->stok;
         $obat->harga = $request->harga;
+        $obat->status = 'aktif';
         $obat->kategori_id = $request->kategori;
         $obat->supplier_id = $request->supplier;
         if($request->hasFile('image'))
@@ -159,7 +148,9 @@ class ObatController extends Controller
     public function destroy($id)
     {
         //
-        $data = Obat::where('id', $id)->delete();
+        $data = Obat::where('id', $id)->first();
+        $data->status = 'nonaktif';
+        $data->save();
         Alert::success('Sukses!', 'Data berhasil di hapus!');
         return back();
     }

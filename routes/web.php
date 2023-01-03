@@ -7,7 +7,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ObatController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Auth;
+
+use App\Http\Controllers\PelangganObatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,11 +57,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth']], function(){
     Route::post('/supplier/edit/{id}', [SupplierController::class, 'update'])->name('admin.supplier.edit');
     Route::get('/supplier/delete/{id}', [SupplierController::class, 'destroy'])->name('admin.supplier.delete');
 
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('admin.transaksi');
+
 
 });
 
 Route::group(['prefix'=>'pelanggan', 'middleware'=>['isPelanggan','auth']], function(){
-    Route::get('/home', [ObatController::class, 'indexPelanggan'])->name('pelanggan.dashboard');
+    Route::get('/home', [PelangganObatController::class, 'index'])->name('pelanggan.dashboard');
 });
 
 

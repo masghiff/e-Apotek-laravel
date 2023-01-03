@@ -14,7 +14,8 @@ class CreateTransaksisTable extends Migration
     public function up()
     {
         Schema::create('transaksis', function (Blueprint $table) {
-            $table->string('nota')->primary();
+            $table->uuid('id')->primary();
+            $table->string('nota');
             $table->uuid('user_id')->nullable(false);
             $table->foreign('user_id')->references('id')->on('users');
             $table->uuid('obat_id')->nullable(false);

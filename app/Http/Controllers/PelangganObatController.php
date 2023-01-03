@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Obat;
+use App\Models\Kategori;
+use App\Models\Supplier;
+use App\Helper\Uuid;
+use App\Helper\Storage;
+use Alert;
 
-class TransaksiController extends Controller
+class PelangganObatController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +25,11 @@ class TransaksiController extends Controller
             'suppliers.nama as supplier')
             ->join('suppliers', 'suppliers.id', '=', 'obats.supplier_id')
             ->join('kategoris', 'kategoris.id', '=', 'obats.kategori_id')
+            ->where('obats.status', 'aktif')
             ->get();
-        return view('admin.transaksi.index', compact('data'));
+
+            // dd($data);
+        return view('pelanggan.obat.index', compact('data'));
     }
 
     /**

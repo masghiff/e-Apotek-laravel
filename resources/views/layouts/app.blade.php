@@ -85,29 +85,11 @@
           </a>
         </li><!-- End Search Icon-->
 
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
-
-        </li><!-- End Notification Nav -->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-        </li><!-- End Messages Nav -->
-
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <img src="{{asset('assets/img/user/', \Auth::user()->foto)}}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{\Auth::user()->nama}}</span>
             <li><a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a></li>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none">
             {{ csrf_field() }}
@@ -185,18 +167,22 @@
         <a class="nav-link collapsed" href="{{route('admin.kategori')}}">
             <i class="bi bi-menu-button-wide"></i><span>Kategori Obat</span>
         </a>
-        @else
-        <a class="nav-link collapsed" href="#">
-            <i class="bi bi-menu-button-wide"></i><span>Kategori Obat</span>
-        </a>
         @endif
       </li>
 
+      @if(\Auth::user()->role == "admin")
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{route('admin.transaksi')}}">
+          <i class="bi bi-journal-text"></i><span>Transaksi Beli</span>
+        </a>
+      </li><!-- End Forms Nav -->
+      @else
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-journal-text"></i><span>Transaksi Beli</span>
         </a>
       </li><!-- End Forms Nav -->
+      @endif
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
@@ -204,7 +190,7 @@
         </a>
       </li><!-- End Tables Nav -->
 
-      @if(\Auth::user()->role = 'admin')
+      @if(\Auth::user()->role == "admin")
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('admin.supplier')}}">
           <i class="bi bi-bar-chart"></i><span>Supplier</span>
@@ -212,11 +198,13 @@
       </li><!-- End Charts Nav -->
       @endif
 
+      @if(\Auth::user()->role == "admin")
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-gem"></i><span>Laporan</span>
         </a>
       </li><!-- End Icons Nav -->
+      @endif
 
       <li class="nav-heading">Pages</li>
 

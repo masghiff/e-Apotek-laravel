@@ -18,6 +18,7 @@ class TransaksiSeeder extends Seeder
         //
         $data = [
             [
+                'id' => '5abedaa5-a70b-43eb-963c-89cf8fff1bd1',
                 'nota' => '4KF9QBDJXY',
                 'user_id' => 'a9fc2932-9525-42c9-bee4-86e3d1563fbc',
                 'obat_id' => 'ea7dee69-3bc5-48ef-9441-c8f3d92cdd23',

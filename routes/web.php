@@ -59,6 +59,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth']], function(){
     Route::get('/supplier/delete/{id}', [SupplierController::class, 'destroy'])->name('admin.supplier.delete');
 
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('admin.transaksi');
+    Route::get('/transaksi/get-data', [TransaksiController::class, 'getData'])->name('admin.transaksi.getdata');
+    Route::get('/transaksi/acc/{id}', [TransaksiController::class, 'store'])->name('admin.transaksi.acc');
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('admin.laporan');
     Route::get('/laporan/get-data', [LaporanController::class, 'getData'])->name('admin.laporan.getdata');

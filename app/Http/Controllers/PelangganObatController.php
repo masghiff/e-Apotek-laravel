@@ -65,23 +65,19 @@ class PelangganObatController extends Controller
             ->groupBy('transaksis.id', 'transaksis.nota', 'transaksis.jumlah', 'transaksis.status')
             ->get();
             $random = substr(mt_rand(), 0, 7);
-
-            if(isset($random))
-            {
-                for($i=0; $i < count($data); $i++)
-                {
-                    $transaksi[$i] = Transaksi::where('user_id', Auth::user()->id)->where('status', 'menunggu')->where('id', $data[$i]['id'])->first();
-                    $transaksi[$i]->nota = $random;
-                    $transaksi[$i]->total_harga = $data[$i]['total_harga'];
-                    $transaksi[$i]->status = 'sukses';
-                    $transaksi[$i]->save();
-                }
-            }
-
             Alert::success('Sukses!', 'Berhasil membeli obats');
-            return back();
-        }catch (\Exception $e){
 
+            for($i=0; $i < count($data); $i++)
+            {
+                $transaksi[$i] = Transaksi::where('user_id', Auth::user()->id)->where('status', 'menunggu')->first();
+                $transaksi[$i]->nota = $random;
+                $transaksi[$i]->total_harga = $data[$i]['total_harga'];
+                $transaksi[$i]->status = 'pending';
+                $transaksi[$i]->save();
+            }
+            return redirect('pelanggan/home');
+        }catch (\Exception $e){
+            return back();
         }
 
 

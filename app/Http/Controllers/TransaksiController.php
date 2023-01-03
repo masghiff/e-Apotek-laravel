@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Obat;
+use App\Models\Transaksi;
+use DB;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
+use Alert;
 
 class TransaksiController extends Controller
 {
@@ -15,15 +20,25 @@ class TransaksiController extends Controller
     public function index()
     {
         //
-        $data = Obat::select('obats.id', 'obats.nama', 'obats.stok',
-            'obats.harga', 'obats.foto', 'kategoris.nama as kategori',
-            'suppliers.nama as supplier')
-            ->join('suppliers', 'suppliers.id', '=', 'obats.supplier_id')
-            ->join('kategoris', 'kategoris.id', '=', 'obats.kategori_id')
-            ->get();
-        return view('admin.transaksi.index', compact('data'));
+        return view('admin.transaksi.index');
     }
 
+    public function getData()
+    {
+        $data = Transaksi::select('transaksis.id', 'transaksis.nota', 'users.nama as user','obats.nama', 'transaksis.jumlah', 'obats.harga', DB::raw("SUM(transaksis.jumlah * obats.harga) as total_harga"))
+                ->join('users', 'users.id', '=', 'transaksis.user_id')
+                ->join('obats', 'obats.id', '=', 'transaksis.obat_id')
+                ->where('transaksis.status', 'pending')
+                ->orderBy('transaksis.created_at', 'DESC')
+                ->groupBy('transaksis.id', 'transaksis.nota', 'users.nama','obats.nama', 'transaksis.jumlah', 'obats.harga');
+        return DataTables::of($data)->addIndexColumn()
+                        ->addColumn('aksi', function($row){
+                                return
+                                '<a class="btn btn-primary" href="'.route('admin.transaksi.acc', $row->nota).'">ACC</a>';
+                        })
+                        ->rawColumns(['aksi'])
+                        ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -40,9 +55,21 @@ class TransaksiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         //
+        $data = Transaksi::where('nota', $id)->get();
+
+        for($i=0; $i < count($data); $i++)
+        {
+            $acc[$i] = Transaksi::where('nota', $id)->first();
+            $acc[$i]->status = 'sukses';
+            $acc[$i]->save();
+        }
+        Alert::success('Sukses', 'Pesanan Sukses');
+
+        return back();
+
     }
 
     /**

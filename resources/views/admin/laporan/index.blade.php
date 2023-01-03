@@ -19,7 +19,36 @@ th, td {
 </div><!-- End Page Title -->
 <section class="section dashboard">
     <div class="container">
-        <a onclick="window.location.href='{{route('admin.kategori.create')}}'" class="btn btn-primary mt-3 mb-3" style="color: white">Tambah Kategori</a>
+        <div class="row">
+            <div class="col-md-3 mt-4">
+                <select class="mt-4 mb-4" name="bulan" id="bulan">
+                    <option value="">Pilih Bulan</option>
+                    <option value="01">Januari</option>
+                    <option value="02">Februari</option>
+                    <option value="03">Maret</option>
+                    <option value="04">April</option>
+                    <option value="05">Mei</option>
+                    <option value="06">Juni</option>
+                    <option value="07">Juli</option>
+                    <option value="08">Agustus</option>
+                    <option value="09">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                </select>
+              </div>
+              <div class="col-md-3 mt-4">
+                <select class="mt-4 mb-4" name="tahun" id="tahun">
+                    <option value="">Pilih Tahun</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+              </div>
+        </div>
+
         <table id="table-kategori" class="table-kategori" style="width: 100%;">
             <thead>
                 <tr>
@@ -28,8 +57,8 @@ th, td {
                     <th>Kategori</th>
                     <th>Nama Obat</th>
                     <th>Jumlah</th>
+                    <th>Harga</th>
                     <th>Total</th>
-                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,12 +71,41 @@ th, td {
 
 @push('scripts')
 <script type="text/javascript">
+
+$('#total_harga').on('keyup',function(){
+    console.log('masok')
+        $.ajax({
+        dataType: 'json',
+        type : 'get',
+        url : "{{route('admin.laporan.rekap')}}",
+
+        data:{ 'total_harga': $('#total_harga').val(),
+        },
+        success:function(data)
+        {
+            console.log(data);
+            var res='';
+            $.each (data, function (key, value) {
+            res += 'total_harga';
+
+   });
+
+            $('tbody').html(res);
+        }
+
+
+    });
+})
+
+
     $(document).ready(function(){
-        console.log('masok')
+    fetch_data1();
+
+    function fetch_data1(bulan='', tahun='') {
 
         $('.table-kategori').DataTable({
             language: {
-                searchPlaceholder: 'Cari Kategori',
+                searchPlaceholder: 'Cari...',
                 sEmptyTable:   'Tidak ada data yang tersedia pada tabel ini',
                 sProcessing:   'Sedang memproses...',
                 // sLengthMenu:   'Tampilkan _MENU_ entri',
@@ -72,8 +130,10 @@ th, td {
             filter : true,
             lengthChange: true,
             ajax: {
-                url: "{{route('admin.kategori.getdata')}}",
+                url: "{{route('admin.laporan.getdata')}}",
                 data: {
+                    bulan : bulan,
+                    tahun : tahun,
                 },
             },
             columns:[
@@ -82,10 +142,32 @@ th, td {
                     return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
+                {data: 'nota', name: 'nota'},
+                {data: 'kategori', name: 'kategori'},
                 {data: 'nama', name: 'nama'},
-                {data: 'aksi', name: 'aksi'},
+                {data: 'jumlah', name: 'jumlah'},
+                {data: 'harga', name: 'harga'},
+                {data: 'total_harga', name: 'total_harga'},
             ]
         });
+    }
+
+    $("#bulan").change(function () {
+        var bulan = $("#bulan").val();
+        var tahun = $("#tahun").val();
+
+        $("#table-kategori").DataTable().destroy();
+
+        fetch_data1(bulan, tahun);
+    });
+    $("#tahun").change(function () {
+        var bulan = $("#bulan").val();
+        var tahun = $("#tahun").val();
+
+        $("#table-kategori").DataTable().destroy();
+
+        fetch_data1(bulan, tahun);
+    });
     });
 </script>
 @endpush

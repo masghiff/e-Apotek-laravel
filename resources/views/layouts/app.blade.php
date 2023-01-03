@@ -209,7 +209,7 @@
 
       @if(\Auth::user()->role == "admin")
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="{{route('admin.laporan')}}">
           <i class="bi bi-gem"></i><span>Laporan</span>
         </a>
       </li><!-- End Icons Nav -->
